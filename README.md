@@ -96,7 +96,7 @@ To better understand the underlying structure and separability of the dataset, s
 
 | Model                                                | Accuracy | Log Loss | AUC  |
 |------------------------------------------------------|----------|----------|------|
-| Logistic Regression                                  | 75%      | 0.55     | 0.79 |
+| Logistic Regression                                  | 75%      | 0.55     | 0.78 |
 | Random Forest (basic)                                | 81%      | 0.46     | 0.77 |
 | Random Forest (tuned attempt with RandomizedSearchCV)| 81%      | 0.52     | 0.79 |
 
@@ -120,10 +120,47 @@ To better understand the underlying structure and separability of the dataset, s
 
 ---
 
-## How to reproduce results
+##  Overview of Files in Repository
+
+### Directory Structure
+  ```
+  .
+  ├── data/ # Raw input files (train.csv, test.csv)
+  ├── models/ # Saved model files (.pkl.gz) for reuse or submission
+  ├── notebooks/ # Jupyter notebooks used for EDA and development
+  │ └── Kaggle Tabular Data.ipynb
+  ├── src/ # Core Python modules
+  │   ├── data_utils.py
+  │   ├── feature_engineering.py
+  │   ├── modeling.py
+  │   ├── thresholds.py
+  │   └── visualization.py
+  ├── main.py # Main script to run the entire training + prediction pipeline
+  ├── requirements.txt # List of required Python packages
+  └── README.md # Project description and instructions
+  ```
+
+### File Descriptions
+- `data/`: Contains the raw input files (`train.csv`, `test.csv`) downloaded from Kaggle.
+- `notebooks/Kaggle Tabular Data.ipynb`: Exploratory notebook used during development and visualization. Also contains my thoughts and notes about why I made certain decisions e.g., why I chose to scale, why I dropped certain features, etc.
+- `src/figures/`: Contains the figures generated during the analysis and visualization steps.
+- `src/data_utils.py`: Loads and inspects raw `.csv` data files.
+- `src/feature_engineering.py`: Performs log scaling, feature dropping, and standardization.
+- `src/modeling.py`: Contains model training and evaluation logic (Random Forest, Logistic Regression).
+- `src/visualization.py`: Creates distribution plots, histograms, and feature comparisons by defect class. Both raw and scaled versions are included.
+- `src/models/`: Folder for saved model binaries (e.g., `.pkl.gz`) used for evaluation or submission.
+- `main.py`: Main driver script that ties together all preprocessing, training, evaluation, and submission steps.
+- `requirements.txt`: Python dependencies for the project.
+- `submission.csv`: Example submission file for Kaggle competition.
+- `README.md`: This file, providing an overview of the project and instructions for use.
+
+---
+
+## How to Reproduce Results
 
 1. Clone this repository
-2. Install Python packages, `numpy`, `matplotlib`, `scikit-learn`
-3. Run `Kaggle Tabular Data.ipynb` end-to-end
-4. Upload `submission.csv` to [Kaggle S3E23](https://www.kaggle.com/competitions/playground-series-s3e23)
+2. Install Python dependencies from `requirements.txt`
+3. Download `train.csv` and `test.csv` from [Kaggle S3E23](https://www.kaggle.com/competitions/playground-series-s3e23)
+4. Run `main.py` or execute steps inside `Kaggle Tabular Data.ipynb`
+5. Submit `submission.csv` to the Kaggle competition
 
