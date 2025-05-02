@@ -10,11 +10,9 @@
 
 This Kaggle challenge is to build a binary classification model to predict whether a software file contains a defect (`1`) or not (`0`) using a range of numerical features extracted from code complexity and structure.
 
-My approach involved exploring and comparing several machine learning models, including:
+My approach involved exploring and comparing two machine learning models using both class balancing and feature transformation (log-scaling, standardization):
 - Logistic Regression (baseline)
 - Random Forest (primary model)
-- Class balancing
-- Feature transformation (log-scaling + standardization)
 
 My best model (according to Kaggle's scoring metric of AUC)  —  a basic tuned Random Forest Classifier using RandomSearchCV, achieved a **validation accuracy of 81%**, with the best **AUC of 0.7885**. These results represent a solid baseline and demonstrate the importance of preprocessing and class imbalance strategies.
 
@@ -25,7 +23,33 @@ My best model (according to Kaggle's scoring metric of AUC)  —  a basic tuned 
 ### Data
 
 - **Type**: Tabular data in `.csv` format.
-  - Input: Numeric software metrics (e.g., lines of code, branching, operands)
+  - Input: 22 software metrics, including:
+
+| Feature             | Description                                                                                   |
+|---------------------|-----------------------------------------------------------------------------------------------|
+| `id`                | A unique identifier for each row. Not used for modeling.                                      |
+| `loc`               | **Lines of Code** – total number of lines in the code block or function.                      |
+| `v(g)`              | **Cyclomatic Complexity** – number of linearly independent paths in the code.                 |
+| `ev(g)`             | **Essential Complexity** – measure of how unstructured the code is.                           |
+| `iv(g)`             | **Design Complexity** – interaction between components, related to testability.               |
+| `n`                 | **Total Count of Operators and Operands** – raw size of the code in terms of tokens.          |
+| `v`                 | **Halstead Volume** – estimated code size using Halstead’s complexity metrics.                |
+| `l`                 | **Halstead Program Length** – length based on unique and total operators/operands.            |
+| `d`                 | **Halstead Difficulty** – estimated difficulty of writing or understanding the code.          |
+| `i`                 | **Halstead Intelligence** – inferred code complexity affecting readability.                   |
+| `e`                 | **Halstead Effort** – effort required to implement the code (volume × difficulty).            |
+| `b`                 | **Halstead Bugs** – theoretical number of bugs (Halstead estimation).                         |
+| `t`                 | **Halstead Time** – estimated time to code, in seconds.                                       |
+| `lOCode`            | **Logical Operators in Code** – number of logical control statements (if, while, etc.).       |
+| `lOComment`         | **Lines of Comments** – total number of comment lines.                                        |
+| `lOBlank`           | **Blank Lines** – number of blank lines in the code.                                          |
+| `locCodeAndComment`| Combined number of lines of code and comments.                                                |
+| `uniq_Op`           | **Unique Operators** – distinct operators used in the code (e.g., `+`, `=`, `return`).        |
+| `uniq_Opnd`         | **Unique Operands** – distinct variables, constants, or literals.                             |
+| `total_Op`          | **Total Operators** – all occurrences of operators in the code.                               |
+| `total_Opnd`        | **Total Operands** – all occurrences of operands (e.g., variables, constants).                |
+| `branchCount`       | **Branch Count** – number of decision points like `if`, `else`, `case`, etc.                  |
+
   - Output: Binary target `defects` column
 - **Size**:
   - Training set: 100,000+ rows
