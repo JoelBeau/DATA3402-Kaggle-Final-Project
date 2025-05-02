@@ -76,10 +76,10 @@ To better understand the underlying structure and separability of the dataset, s
 - Features like `l`, `branchCount`, `v(g)`, and `total_Opnd` showed **visually distinct distributions** between the classes, especially after transformation, suggesting they may be useful predictors
 
 #### Visualizations of these features are shown below:
-![image](src/figs/examples/l.png)
-![image](src/figs/examples/branchCount.png)
-![image](src/figs/examples/v(g).png)
-![image](src/figs/examples/total_Opnd.png)
+![l Attribute Visualization](src/figs/examples/l.png)
+![branchCount Attribute Visualization](src/figs/examples/branchCount.png)
+![v(g) Attribute Visualization](src/figs/examples/v(g).png)
+![total_Opnd Attribute Visualization](src/figs/examples/total_Opnd.png)
 
 #### Distribution Comparison (Before vs. After Scaling)
 
