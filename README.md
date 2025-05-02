@@ -14,7 +14,7 @@ My approach involved exploring and comparing two machine learning models using b
 - Logistic Regression (baseline)
 - Random Forest (primary model)
 
-My best model (according to Kaggle's scoring metric of AUC)  —  a basic tuned Random Forest Classifier using RandomSearchCV, achieved a **validation accuracy of 81%**, with the best **AUC of 0.7885**. These results represent a solid baseline and demonstrate the importance of preprocessing and class imbalance strategies.
+My best-performing model, a tuned Random Forest Classifier optimized with `RandomizedSearchCV`, achieved a **validation accuracy of 81%** and an **AUC score of 0.7885**, closely aligning with the **Kaggle leaderboard’s top score of 0.79429**. This indicates that the model performed competitively relative to other submissions.
 
 ---
 
@@ -25,30 +25,29 @@ My best model (according to Kaggle's scoring metric of AUC)  —  a basic tuned 
 - **Type**: Tabular data in `.csv` format.
   - Input: 22 software metrics, including:
 
-| Feature             | Description                                                                                   |
-|---------------------|-----------------------------------------------------------------------------------------------|
-| `id`                | A unique identifier for each row. Not used for modeling.                                      |
-| `loc`               | **Lines of Code** – total number of lines in the code block or function.                      |
-| `v(g)`              | **Cyclomatic Complexity** – number of linearly independent paths in the code.                 |
-| `ev(g)`             | **Essential Complexity** – measure of how unstructured the code is.                           |
-| `iv(g)`             | **Design Complexity** – interaction between components, related to testability.               |
-| `n`                 | **Total Count of Operators and Operands** – raw size of the code in terms of tokens.          |
-| `v`                 | **Halstead Volume** – estimated code size using Halstead’s complexity metrics.                |
-| `l`                 | **Halstead Program Length** – length based on unique and total operators/operands.            |
-| `d`                 | **Halstead Difficulty** – estimated difficulty of writing or understanding the code.          |
-| `i`                 | **Halstead Intelligence** – inferred code complexity affecting readability.                   |
-| `e`                 | **Halstead Effort** – effort required to implement the code (volume × difficulty).            |
-| `b`                 | **Halstead Bugs** – theoretical number of bugs (Halstead estimation).                         |
-| `t`                 | **Halstead Time** – estimated time to code, in seconds.                                       |
-| `lOCode`            | **Logical Operators in Code** – number of logical control statements (if, while, etc.).       |
-| `lOComment`         | **Lines of Comments** – total number of comment lines.                                        |
-| `lOBlank`           | **Blank Lines** – number of blank lines in the code.                                          |
-| `locCodeAndComment`| Combined number of lines of code and comments.                                                |
-| `uniq_Op`           | **Unique Operators** – distinct operators used in the code (e.g., `+`, `=`, `return`).        |
-| `uniq_Opnd`         | **Unique Operands** – distinct variables, constants, or literals.                             |
-| `total_Op`          | **Total Operators** – all occurrences of operators in the code.                               |
-| `total_Opnd`        | **Total Operands** – all occurrences of operands (e.g., variables, constants).                |
-| `branchCount`       | **Branch Count** – number of decision points like `if`, `else`, `case`, etc.                  |
+    | Feature             | Description                                                                                   |
+    |---------------------|-----------------------------------------------------------------------------------------------|
+    | `loc`               | **Lines of Code** – total number of lines in the code block or function.                      |
+    | `v(g)`              | **Cyclomatic Complexity** – number of linearly independent paths in the code.                 |
+    | `ev(g)`             | **Essential Complexity** – measure of how unstructured the code is.                           |
+    | `iv(g)`             | **Design Complexity** – interaction between components, related to testability.               |
+    | `n`                 | **Total Count of Operators and Operands** – raw size of the code in terms of tokens.          |
+    | `v`                 | **Halstead Volume** – estimated code size using Halstead’s complexity metrics.                |
+    | `l`                 | **Halstead Program Length** – length based on unique and total operators/operands.            |
+    | `d`                 | **Halstead Difficulty** – estimated difficulty of writing or understanding the code.          |
+    | `i`                 | **Halstead Intelligence** – inferred code complexity affecting readability.                   |
+    | `e`                 | **Halstead Effort** – effort required to implement the code (volume × difficulty).            |
+    | `b`                 | **Halstead Bugs** – theoretical number of bugs (Halstead estimation).                         |
+    | `t`                 | **Halstead Time** – estimated time to code, in seconds.                                       |
+    | `lOCode`            | **Logical Operators in Code** – number of logical control statements (if, while, etc.).       |
+    | `lOComment`         | **Lines of Comments** – total number of comment lines.                                        |
+    | `lOBlank`           | **Blank Lines** – number of blank lines in the code.                                          |
+    | `locCodeAndComment` | Combined number of lines of code and comments.                                                |
+    | `uniq_Op`           | **Unique Operators** – distinct operators used in the code (e.g., `+`, `=`, `return`).        |
+    | `uniq_Opnd`         | **Unique Operands** – distinct variables, constants, or literals.                             |
+    | `total_Op`          | **Total Operators** – all occurrences of operators in the code.                               |
+    | `total_Opnd`        | **Total Operands** – all occurrences of operands (e.g., variables, constants).                |
+    | `branchCount`       | **Branch Count** – number of decision points like `if`, `else`, `case`, etc.                  |
 
   - Output: Binary target `defects` column
 - **Size**:
@@ -74,7 +73,13 @@ To better understand the underlying structure and separability of the dataset, s
 
 - For each feature, I plotted histograms comparing the distribution of values for each class (`defects = 0` vs. `defects = 1`).
 - These visualizations revealed that many features were **right-skewed**, and raw values often had poor visual separation between classes.
-- Features like `l`, `branchCount`, `v(g)`, and `total_Opnd` showed **visually distinct distributions** between the classes, especially after transformation, suggesting they may be useful predictors.
+- Features like `l`, `branchCount`, `v(g)`, and `total_Opnd` showed **visually distinct distributions** between the classes, especially after transformation, suggesting they may be useful predictors
+
+#### Visualizations of these features are shown below:
+![image](src/figs/examples/l.png)
+![image](src/figs/examples/branchCount.png)
+![image](src/figs/examples/v(g).png)
+![image](src/figs/examples/total_Opnd.png)
 
 #### Distribution Comparison (Before vs. After Scaling)
 
@@ -139,7 +144,7 @@ To better understand the underlying structure and separability of the dataset, s
 
 - Try XGBoost or LightGBM with tuned parameters
 - Use SHAP values for better interpretability
-- Test the ensemble of models to improve log loss
+- Explore ensemble methods (e.g., voting, stacking) to potentially improve AUC
 - Explore feature engineering based on domain knowledge
 
 ---
