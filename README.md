@@ -127,7 +127,7 @@ To better understand the underlying structure and separability of the dataset, s
   .
   ├── data/ # Raw input files (train.csv, test.csv)
   ├── models/ # Saved model files (.pkl.gz) for reuse or submission
-  ├── notebooks/ # Jupyter notebooks used for EDA and development
+  ├── notebooks/ # Jupyter notebooks used for initial development & notes
   │ └── Kaggle Tabular Data.ipynb
   ├── src/ # Core Python modules
   │   ├── data_utils.py
